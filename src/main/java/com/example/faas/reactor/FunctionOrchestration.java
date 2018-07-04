@@ -11,6 +11,7 @@ import com.example.faas.ex.FunctionException;
 import com.example.faas.reactor.exec.Executor;
 import com.example.faas.reactor.fnloader.FunctionLoader;
 import com.example.faas.reactor.fnstore.DefinitionPersistence;
+import com.example.faas.reactor.rmq.Sender;
 import com.example.faas.reactor.workspace.WorkspaceManager;
 
 public class FunctionOrchestration {
@@ -29,6 +30,9 @@ public class FunctionOrchestration {
 	
 	@Autowired
 	private Executor executor;
+	
+	@Autowired
+	private Sender sender;
 
 	public void exec(JobRequest request) throws FunctionException {
 		String jobId = idGenerator.generate();
@@ -38,6 +42,6 @@ public class FunctionOrchestration {
 				workspaceMgr.prepare(job, functionDefinition);
 		ExecutionResource executionResource = functionLoader.load(workspaceResourcesDescriptor);
 		Object result = executor.execute(executionResource);
-		
+		sender.send(request, result);
 	}
 }
