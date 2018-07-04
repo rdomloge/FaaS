@@ -1,5 +1,7 @@
 package com.example.faas.reactor;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.faas.common.ExecutionResource;
@@ -40,8 +42,17 @@ public class FunctionOrchestration {
 		FunctionDefinition functionDefinition = persistence.load(request);
 		WorkspaceResourcesDescriptor workspaceResourcesDescriptor = 
 				workspaceMgr.prepare(job, functionDefinition);
-		ExecutionResource executionResource = functionLoader.load(workspaceResourcesDescriptor);
-		Object result = executor.execute(executionResource);
-		sender.send(request, result);
+		
+		/* we might not want to close the execution resource here...
+		 * might want to keep it in a cache for a while */
+		try(ExecutionResource executionResource = functionLoader.load(workspaceResourcesDescriptor)) {
+			Object result = executor.execute(executionResource);
+			sender.send(request, result);
+		} 
+		catch (IOException e) {
+			// maybe we should log something here
+			// but all that happened was that we failed to cleanup the execution resource
+			// this typically means closing a URLClassloader
+		}
 	}
 }

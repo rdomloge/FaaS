@@ -1,9 +1,8 @@
 package com.example.faas.reactor.exec;
 
-import java.io.IOException;
-
 import com.example.faas.common.ExecutionResource;
 import com.example.faas.common.Function;
+import com.example.faas.common.JobRequest;
 
 public class Executor<V> {
 	
@@ -12,17 +11,9 @@ public class Executor<V> {
 		// probably best to submit this to a thread pool, such as a Scheduled Executor
 		
 		Function<V> function = resource.getFunction();
-		try {
-			return function.call();
-		}
-		finally {
-			try {
-				resource.close();
-			} 
-			catch (IOException e) {
-				// log it, if you like
-			}	
-		}
+		JobRequest jobRequest = resource.getPreparedDescriptor().getJob().getJobRequest();
+		function.setRequest(jobRequest);
+		return function.call();
 	}
 
 }

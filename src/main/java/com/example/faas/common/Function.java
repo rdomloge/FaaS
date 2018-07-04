@@ -6,4 +6,5 @@ public interface Function<V> extends Callable<V>{
 	
 	V call();
 
+	void setRequest(JobRequest request);
 }
