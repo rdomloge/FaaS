@@ -1,8 +1,3 @@
 # FaaS
 
-JSON converted to Job
-Job sent to Persistence which provides FunctionDefinition
-FunctionDefinition and Job sent to Workspace Mgr which provides WorkspaceResourcesDescriptor
-Workspace
-
-Function Definition >> WorkspaceResourcesDescriptor inc. Job 
+How hard can it be to create a FaaS framework in Java?
