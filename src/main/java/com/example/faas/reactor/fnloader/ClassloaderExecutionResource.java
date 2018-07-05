@@ -5,7 +5,6 @@ import java.net.URLClassLoader;
 
 import com.example.faas.common.ExecutionResource;
 import com.example.faas.common.Function;
-import com.example.faas.common.Job;
 import com.example.faas.common.WorkspaceResourcesDescriptor;
 
 public class ClassloaderExecutionResource<V> extends ExecutionResource<V> {
@@ -20,6 +19,7 @@ public class ClassloaderExecutionResource<V> extends ExecutionResource<V> {
 
 	@Override
 	public void close() throws IOException {
+		super.close();
 		classLoader.close();
 	}
 

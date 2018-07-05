@@ -11,7 +11,7 @@ public class Executor<V> {
 		// probably best to submit this to a thread pool, such as a Scheduled Executor
 		
 		Function<V> function = resource.getFunction();
-		JobRequest jobRequest = resource.getPreparedDescriptor().getJob().getJobRequest();
+		JobRequest jobRequest = resource.getWorkspaceResourcesDescriptor().getJob().getJobRequest();
 		function.setRequest(jobRequest);
 		return function.call();
 	}

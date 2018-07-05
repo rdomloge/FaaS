@@ -1,25 +1,32 @@
 package com.example.faas.common;
 
 import java.io.Closeable;
+import java.io.IOException;
 
-public abstract class ExecutionResource<V> implements Closeable {
+public class ExecutionResource<V> implements Closeable {
 	
 	private Function<V> function;
 	
-	private WorkspaceResourcesDescriptor preparedDescriptor;
+	private WorkspaceResourcesDescriptor workspaceResourcesDescriptor;
 
-	public ExecutionResource(Function<V> function, WorkspaceResourcesDescriptor preparedDescriptor) {
+	public ExecutionResource(Function<V> function, WorkspaceResourcesDescriptor workspaceResourcesDescriptor) {
 		super();
 		this.function = function;
-		this.preparedDescriptor = preparedDescriptor;
+		this.workspaceResourcesDescriptor = workspaceResourcesDescriptor;
 	}
 
 	public Function<V> getFunction() {
 		return function;
 	}
 
-	public WorkspaceResourcesDescriptor getPreparedDescriptor() {
-		return preparedDescriptor;
+	
+	public WorkspaceResourcesDescriptor getWorkspaceResourcesDescriptor() {
+		return workspaceResourcesDescriptor;
+	}
+
+	@Override
+	public void close() throws IOException {
+		workspaceResourcesDescriptor.close();
 	}
 	
 }

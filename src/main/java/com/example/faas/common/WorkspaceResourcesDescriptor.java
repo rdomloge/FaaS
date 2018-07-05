@@ -1,8 +1,10 @@
 package com.example.faas.common;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 
-public class WorkspaceResourcesDescriptor {
+public class WorkspaceResourcesDescriptor implements Closeable {
 	
 	private FunctionDefinition functionDefinition;
 	
@@ -49,6 +51,11 @@ public class WorkspaceResourcesDescriptor {
 
 	public File[] getFaasLibs() {
 		return faasLibs;
+	}
+
+	@Override
+	public void close() throws IOException {
+		// delete loads of stuff here
 	}
 	
 	

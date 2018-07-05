@@ -21,4 +21,8 @@ public class WorkspaceManager {
 		
 		return null;
 	}
+	
+	public void cleanup(WorkspaceResourcesDescriptor workspaceResourcesDescriptor) {
+		// delete the folder recursively
+	}
 }
