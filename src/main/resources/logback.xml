@@ -5,7 +5,7 @@
     </encoder>
   </appender>
 
-  <logger name="com.domloge.noname" level="DEBUG"/>
+  <logger name="com.example" level="DEBUG"/>
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />
