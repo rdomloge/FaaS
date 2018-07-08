@@ -1,5 +1,7 @@
 package com.example.faas.common;
 
+import com.example.faas.dto.JobRequest;
+
 public class Job {
 	
 	private String jobId;

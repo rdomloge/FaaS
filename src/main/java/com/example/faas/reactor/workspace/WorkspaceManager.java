@@ -1,9 +1,12 @@
 package com.example.faas.reactor.workspace;
 
+import org.springframework.stereotype.Service;
+
 import com.example.faas.common.FunctionDefinition;
 import com.example.faas.common.Job;
 import com.example.faas.common.WorkspaceResourcesDescriptor;
 
+@Service
 public class WorkspaceManager {
 
 	public WorkspaceResourcesDescriptor prepare(Job job, FunctionDefinition functionDefinition) {

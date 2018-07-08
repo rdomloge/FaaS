@@ -1,9 +1,12 @@
 package com.example.faas.reactor.exec;
 
+import org.springframework.stereotype.Service;
+
 import com.example.faas.common.ExecutionResource;
 import com.example.faas.common.Function;
-import com.example.faas.common.JobRequest;
+import com.example.faas.dto.JobRequest;
 
+@Service
 public class Executor<V> {
 	
 	public V execute(ExecutionResource<V> resource) {

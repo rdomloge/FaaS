@@ -1,9 +1,11 @@
 package com.example.faas.reactor.fnstore;
 
-import com.example.faas.common.FunctionDefinition;
-import com.example.faas.common.Job;
-import com.example.faas.common.JobRequest;
+import org.springframework.stereotype.Service;
 
+import com.example.faas.common.FunctionDefinition;
+import com.example.faas.dto.JobRequest;
+
+@Service
 public class DefinitionPersistence {
 
 	
