@@ -15,7 +15,7 @@ public class Executor<V> {
 		
 		Function<V> function = resource.getFunction();
 		JobRequest jobRequest = resource.getWorkspaceResourcesDescriptor().getJob().getJobRequest();
-		function.setRequest(jobRequest);
+		function.setJobParams(jobRequest.getParams());
 		return function.call();
 	}
 
