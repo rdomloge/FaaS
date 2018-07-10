@@ -38,6 +38,7 @@ public class FunctionLoader {
 						workspaceResourcesDescriptor.getFunctionDefinition().getFunctionClassName()));
 			Object instance = loaded.newInstance();
 			Function<?> f = (Function<?>) instance;
+			f.setConfig(workspaceResourcesDescriptor.getFunctionDefinition().getConfig());
 			LOGGER.debug("Function loaded");
 			return new ClassloaderExecutionResource(f, workspaceResourcesDescriptor, cl);
 		}

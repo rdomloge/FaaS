@@ -1,4 +1,6 @@
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,9 @@ public class Test implements Function<String> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
 	
 	private JobRequest request;
+	
+	private Map<String, String> config;
+	
 
 	public String call() {
 		if(null == request) throw new IllegalStateException();
@@ -29,5 +34,9 @@ public class Test implements Function<String> {
 	
 	public void setRequest(JobRequest newrequest) {
 		this.request = newrequest;
+	}
+	
+	public void setConfig(Map<String, String> config) {
+		this.config = config;
 	}
 }
