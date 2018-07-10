@@ -10,11 +10,10 @@ public class FunctionDefinition {
 	
 	private String packageName;
 	
-	private String[] libs;
+	private LibResource[] libs;
 
-	public FunctionDefinition(String functionUniqueName, String source, String functionClassName, String packageName,
-			String[] libs) {
-		super();
+	public FunctionDefinition(String functionUniqueName, String source, String functionClassName, 
+			String packageName, LibResource[] libs) {
 		this.functionUniqueName = functionUniqueName;
 		this.source = source;
 		this.functionClassName = functionClassName;
@@ -38,10 +37,7 @@ public class FunctionDefinition {
 		return packageName;
 	}
 
-	public String[] getLibs() {
+	public LibResource[] getLibs() {
 		return libs;
 	}
-
-	
-
 }

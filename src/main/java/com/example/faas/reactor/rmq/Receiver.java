@@ -26,6 +26,6 @@ public class Receiver {
 	public void receive(String msg) throws IOException, FunctionException {
 		LOGGER.debug("Received: {}", msg);
 		JobRequest jobRequest = mapper.readValue(msg, JobRequest.class);
-		orchestration.exec(jobRequest);
+		orchestration.orchestrate(jobRequest);
 	}
 }

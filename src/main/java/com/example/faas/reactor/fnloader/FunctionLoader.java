@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.example.faas.common.ExecutionResource;
 import com.example.faas.common.Function;
 import com.example.faas.common.FunctionDefinition;
+import com.example.faas.common.LibResource;
 import com.example.faas.common.WorkspaceResourcesDescriptor;
 import com.example.faas.ex.FunctionException;
 import com.example.faas.ex.FunctionPreparationException;
@@ -42,6 +43,7 @@ public class FunctionLoader {
 		}
 		catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			LOGGER.info("Built classpath URLs [{}]", Arrays.toString(classPathUrls));
+			LOGGER.error("Could not create FN instance ", e);
 			throw new FunctionPreparationException(e);
 		}
 	}
@@ -52,9 +54,9 @@ public class FunctionLoader {
 		FunctionDefinition functionDefinition = workspaceResourcesDescriptor.getFunctionDefinition();
 		List<URL> urls = new LinkedList<>();
 		try {
-			String[] libNames = functionDefinition.getLibs();
-			for (int i = 0; i < libNames.length; i++) {
-				File file = new File(workspaceResourcesDescriptor.getLibFolder(), libNames[i]);
+			LibResource[] libs = functionDefinition.getLibs();
+			for (int i = 0; i < libs.length; i++) {
+				File file = new File(workspaceResourcesDescriptor.getLibFolder(), libs[i].getLibName());
 				if( ! file.exists()) throw new FunctionPreparationException("Lib missing: "+file);
 				urls.add(file.toURI().toURL());
 			}
