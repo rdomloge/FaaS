@@ -3,6 +3,8 @@ package com.example.faas.reactor.fnstore;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,10 @@ public class DefinitionPersistence {
 					"/Users/rdomloge/Documents/workspace/FaaS/src/main/test-functions/catholicon.jar")};
 		
 		String functionName = request.getFunctionName();
-		FunctionDefinition def = new FunctionDefinition(functionName, loadSrcFromFile(), "Test", "", libs);
+		
+		Map<String, String> config = new HashMap<>();
+		FunctionDefinition def = new FunctionDefinition(functionName, loadSrcFromFile(), "Test", "", 
+				config, libs);
 		// load function identified by functionName
 		return def;
 	}
