@@ -43,6 +43,7 @@ public class FunctionLoader {
 		}
 		catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			LOGGER.info("Built classpath URLs [{}]", Arrays.toString(classPathUrls));
+			LOGGER.error("Could not create FN instance ", e);
 			throw new FunctionPreparationException(e);
 		}
 	}

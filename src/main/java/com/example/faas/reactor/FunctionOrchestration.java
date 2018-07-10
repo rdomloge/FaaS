@@ -74,8 +74,8 @@ public class FunctionOrchestration {
 			@Override
 			public void run() {
 				
-				FunctionDefinition functionDefinition = persistence.load(request);
 				try {
+					FunctionDefinition functionDefinition = persistence.load(request);
 					WorkspaceResourcesDescriptor workspaceResourcesDescriptor = 
 							workspaceMgr.prepare(job, functionDefinition);
 					
@@ -90,8 +90,14 @@ public class FunctionOrchestration {
 						// but all that happened was that we failed to cleanup the execution resource
 						// this typically means closing a URLClassloader
 						LOGGER.error("Error cleaning up the execution resource", e);
+						// no need to send error here - this is only called after the response is sent
 					} 
+					catch(NoClassDefFoundError err) {
+						LOGGER.error("Incomplete classpath", err);
+						sender.sendError(request, "Could not execute", err);
+					}
 					catch (FunctionException e) {
+						LOGGER.error("Function execution failed", e);
 						sender.sendError(request, "Could not execute", e);
 					}
 				}

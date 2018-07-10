@@ -47,7 +47,7 @@ public class Sender {
 		}
 	}
 	
-	public void sendError(JobRequest request, String msg, Exception e) {
+	public void sendError(JobRequest request, String msg, Throwable e) {
 		
 		try {
 			Map<String, String> details = new HashMap<>();
@@ -67,7 +67,7 @@ public class Sender {
 		}
 	}
 	
-	private String toString(Exception e) {
+	private String toString(Throwable e) {
 		try(CharArrayWriter buf = new CharArrayWriter()) {
 			try(PrintWriter pw = new PrintWriter(buf)) {
 				e.printStackTrace(pw);
