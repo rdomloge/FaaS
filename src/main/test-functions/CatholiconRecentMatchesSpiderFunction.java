@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.faas.common.Function;
 
 import catholicon.domain.Match;
+import catholicon.controller.MatchCardController;
 
 public class CatholiconRecentMatchesSpiderFunction extends RecentMatchResultsSpider implements Function<List<Match>> {
 
@@ -15,7 +16,7 @@ public class CatholiconRecentMatchesSpiderFunction extends RecentMatchResultsSpi
 	
 	@Override
 	public List<Match> call() {
-		
+		matchCardController = new MatchCardController();
 		spiderLatestResults();
 		return getRecentMatches();
 	}
