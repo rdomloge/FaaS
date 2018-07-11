@@ -52,4 +52,14 @@ public class FunctionDefinition {
 	public Map<String, String> getConfig() {
 		return config;
 	}
+	
+	public String getFullyQualifiedClassName() {
+		StringBuilder builder = new StringBuilder();
+		if(null != packageName && packageName.trim().length() > 0) {
+			builder.append(packageName);
+			builder.append('.');
+		}
+		builder.append(this.functionClassName);
+		return builder.toString();
+	}
 }

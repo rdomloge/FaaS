@@ -40,8 +40,7 @@ public class WorkspaceManager {
 		File compiledBinFolder = checkOrMakeFolder(new File(workspace, "classes"));
 		
 		File[] faasLibs = new File[] { 
-				new File("/Users/rdomloge/Documents/workspace/FaaS-API/target/faas-api-0.0.1-SNAPSHOT.jar"),
-				new File("/Users/rdomloge/Documents/workspace/FaaS-DTO/target/faas-dto-0.0.1-SNAPSHOT.jar")
+				new File("/Users/rdomloge/Documents/workspace/FaaS-API/target/faas-api-0.0.1-SNAPSHOT.jar")
 				};
 		
 		compile(functionDefinition, jobId, compiledBinFolder, libFolder, faasLibs);
