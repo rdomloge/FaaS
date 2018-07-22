@@ -1,0 +1,40 @@
+<root>
+<functions>
+	<function>
+		<name>test</name>
+		<classname>Test</classname>
+		<filename>Test.java</filename>
+		<filepath>C:/Users/daveym/Documents/JavaProgs/Projects/FAAS/FaaS/src/main/test-functions/</filepath>
+		<libs>
+			<lib>
+				<filename>slf4j-simple-1.7.7.jar</filename>
+				<filepath>c:/Users/daveym/.m2/repository/org/slf4j/slf4j-simple/1.7.7/</filepath>
+			</lib>
+			<lib>
+				<filename>slf4j-api-1.6.1.jar</filename>
+				<filepath>c:/Users/daveym/.m2/repository/org/slf4j/slf4j-api/1.6.1/</filepath>
+			</lib>
+			<lib>
+				<filename>catholicon.jar</filename>
+				<filepath>c:/Users/daveym/Documents/JavaProgs/Projects/FAAS/faas/src/main/test-functions/</filepath>
+			</lib>
+		</libs>
+	</function>
+	<function>
+		<name>factorial</name>
+		<classname>Factorial</classname>
+		<filename>Factorial.java</filename>
+		<filepath>C:/Users/daveym/Documents/JavaProgs/Projects/FAAS/FaaS/src/main/test-functions/</filepath>
+		<libs>
+			<lib>
+				<filename>slf4j-simple-1.7.7.jar</filename>
+				<filepath>c:/Users/daveym/.m2/repository/org/slf4j/slf4j-simple/1.7.7/</filepath>
+			</lib>
+			<lib>
+				<filename>slf4j-api-1.6.1.jar</filename>
+				<filepath>c:/Users/daveym/.m2/repository/org/slf4j/slf4j-api/1.6.1/</filepath>
+			</lib>
+		</libs>
+	</function>
+</functions>
+</root>

@@ -23,7 +23,7 @@ import com.example.faas.ex.FunctionException;
 import com.example.faas.ex.FunctionPreparationException;
 import com.example.faas.reactor.exec.Executor;
 import com.example.faas.reactor.fnloader.FunctionLoader;
-import com.example.faas.reactor.fnstore.DefinitionPersistence;
+import com.example.faas.reactor.fnstore.DatabaseDefinitionPersistence;
 import com.example.faas.reactor.rmq.Sender;
 import com.example.faas.reactor.workspace.WorkspaceManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ public class FunctionOrchestration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FunctionOrchestration.class);
 	
 	@Autowired
-	private DefinitionPersistence persistence;
+	private DatabaseDefinitionPersistence persistence;
 	
 	@Autowired
 	private JobIdGenerator idGenerator;

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.example.faas"})
+@ComponentScan(basePackages = {"com.example.faas", "com.sqlite"})
 public class ApplicationMain {
 
 	public static void main(String[] args) {

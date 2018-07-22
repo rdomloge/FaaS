@@ -4,7 +4,7 @@ public class FunctionDefinition {
 	
 	private String functionUniqueName;
 	
-	private String source;
+	private String sourceCode;
 	
 	private String functionClassName;
 	
@@ -12,10 +12,10 @@ public class FunctionDefinition {
 	
 	private LibResource[] libs;
 
-	public FunctionDefinition(String functionUniqueName, String source, String functionClassName, 
+	public FunctionDefinition(String functionUniqueName, String sourceCode, String functionClassName, 
 			String packageName, LibResource[] libs) {
 		this.functionUniqueName = functionUniqueName;
-		this.source = source;
+		this.sourceCode = sourceCode;
 		this.functionClassName = functionClassName;
 		this.packageName = packageName;
 		this.libs = libs;
@@ -26,7 +26,7 @@ public class FunctionDefinition {
 	}
 
 	public String getSource() {
-		return source;
+		return sourceCode;
 	}
 
 	public String getFunctionClassName() {
