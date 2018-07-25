@@ -1,4 +1,4 @@
-package com.sqlite;
+package com.example.faas.sqlite;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

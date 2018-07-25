@@ -11,8 +11,8 @@ import com.example.faas.common.FunctionDefinition;
 import com.example.faas.common.LibResource;
 import com.example.faas.dto.JobRequest;
 import com.example.faas.ex.FunctionPreparationException;
-import com.sqlite.model.Function;
-import com.sqlite.repository.FunctionRepository;
+import com.example.faas.sqlite.model.Function;
+import com.example.faas.sqlite.repository.FunctionRepository;
 
 @Service
 public class DatabaseDefinitionPersistence implements DefinitionPersistence {

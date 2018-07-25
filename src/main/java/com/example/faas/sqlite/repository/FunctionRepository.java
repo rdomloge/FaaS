@@ -1,4 +1,4 @@
-package com.sqlite.repository;
+package com.example.faas.sqlite.repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,8 +10,8 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.sqlite.model.Function;
-import com.sqlite.model.Lib;
+import com.example.faas.sqlite.model.Function;
+import com.example.faas.sqlite.model.Lib;
 
 @Repository
 public class FunctionRepository {
