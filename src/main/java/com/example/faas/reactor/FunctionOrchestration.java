@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import com.example.faas.common.ExecutionResource;
 import com.example.faas.common.FunctionDefinition;
@@ -73,16 +74,33 @@ public class FunctionOrchestration {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				
+				StopWatch stopWatch = new StopWatch(
+						request.getFunctionName() + 
+						" -- " + 
+						jobId +
+						" -- "+
+						request.getCorrelationId());
+				stopWatch.start("Load "+request.getFunctionName()+" function definition ["+jobId+"]");
 				try {
 					FunctionDefinition functionDefinition = persistence.load(request);
+					stopWatch.stop();
+					stopWatch.start("Prepare "+request.getFunctionName()+" function files ["+jobId+"]");
 					WorkspaceResourcesDescriptor workspaceResourcesDescriptor = 
 							workspaceMgr.prepare(job, functionDefinition);
+					
+					stopWatch.stop();
+					stopWatch.start("Instantiate "+request.getFunctionName()+" function ["+jobId+"]");
 					
 					/* we might not want to close the execution resource here...
 					 * might want to keep it in a cache for a while */
 					try(ExecutionResource executionResource = functionLoader.load(workspaceResourcesDescriptor)) {
+						stopWatch.stop();
+						stopWatch.start("Execute "+request.getFunctionName()+" function ["+jobId+"]");
+						
 						Object result = executor.execute(executionResource);
+						stopWatch.stop();
+						stopWatch.start("Send response for "+request.getFunctionName()+" function ["+jobId+"]");
+						
 						sender.send(request, new JobResponse(request, result, Outcome.SUCCESS));
 					} 
 					catch (IOException e) {
@@ -104,6 +122,11 @@ public class FunctionOrchestration {
 				catch(FunctionPreparationException fpex) {
 					sender.sendError(request, "Could not prepare", fpex);
 				}
+				finally {
+					stopWatch.stop();
+					LOGGER.info("Function complete\n"+stopWatch.prettyPrint());	
+				}
+				
 			}
 		};
 		exec.submit(new RuntimeExceptionHandlingRunnable(r, job, sender));

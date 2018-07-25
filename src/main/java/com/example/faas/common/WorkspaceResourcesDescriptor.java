@@ -20,7 +20,7 @@ public class WorkspaceResourcesDescriptor implements Closeable {
 
 	public WorkspaceResourcesDescriptor(FunctionDefinition functionDefinition, Job job, File workspace, 
 			File libFolder, File compiledBinFolder, File[] faasLibs) {
-		super();
+		
 		this.functionDefinition = functionDefinition;
 		this.job = job;
 		this.workspace = workspace;

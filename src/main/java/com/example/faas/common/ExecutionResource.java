@@ -10,7 +10,6 @@ public class ExecutionResource<V> implements Closeable {
 	private WorkspaceResourcesDescriptor workspaceResourcesDescriptor;
 
 	public ExecutionResource(Function<V> function, WorkspaceResourcesDescriptor workspaceResourcesDescriptor) {
-		super();
 		this.function = function;
 		this.workspaceResourcesDescriptor = workspaceResourcesDescriptor;
 	}

@@ -59,12 +59,32 @@ public class WorkspaceManager {
 		File libFolder = checkOrMakeFolder(new File(workspace, "lib"));
 		copyLibs(libFolder, functionDefinition.getLibs());
 		File compiledBinFolder = checkOrMakeFolder(new File(workspace, "classes"));
+//<<<<<<< Updated upstream
 
 		File[] faasLibs = new File[] { new File(apiJar), new File(dtoJar) };
 
 		compile(functionDefinition, job.getJobId(), compiledBinFolder, libFolder, faasLibs);
 
 		return new WorkspaceResourcesDescriptor(functionDefinition, job, workspace, libFolder, compiledBinFolder,
+//=======
+		
+//		File[] faasLibs = new File[] { 
+//				new File("/Users/rdomloge/Documents/workspace/FaaS-API/target/faas-api-0.0.1-SNAPSHOT.jar"),
+//				new File("/Users/rdomloge/Documents/workspace/FaaS-VM/target/faas-vm-0.0.1-SNAPSHOT.jar"),
+//				new File("/Users/rdomloge/.m2/repository/ch/qos/logback/logback-classic/1.1.9/logback-classic-1.1.9.jar"),
+//				new File("/Users/rdomloge/.m2/repository/ch/qos/logback/logback-core/1.1.9/logback-core-1.1.9.jar"),
+//				new File("/Users/rdomloge/.m2/repository/org/slf4j/slf4j-api/1.7.22/slf4j-api-1.7.22.jar")
+//				};
+		
+//		compile(functionDefinition, jobId, compiledBinFolder, libFolder, faasLibs);
+		
+//		return new WorkspaceResourcesDescriptor(
+//				functionDefinition, 
+//				job, 
+//				workspace, 
+//				libFolder, 
+//				compiledBinFolder, 
+//>>>>>>> Stashed changes
 				faasLibs);
 	}
 
