@@ -1,4 +1,4 @@
-package com.sqlite.model;
+package com.example.faas.sqlite.model;
 
 import java.util.ArrayList;
 import java.util.List;

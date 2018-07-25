@@ -1,4 +1,4 @@
-package com.sqlite.config;
+package com.example.faas.sqlite.config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import com.example.faas.sqlite.FileHelper;
+import com.example.faas.sqlite.model.Function;
+import com.example.faas.sqlite.model.Functions;
+import com.example.faas.sqlite.model.Lib;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.sqlite.FileHelper;
-import com.sqlite.model.Function;
-import com.sqlite.model.Functions;
-import com.sqlite.model.Lib;
 
 @Configuration
 @PropertySource("classpath:application.properties")

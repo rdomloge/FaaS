@@ -1,4 +1,4 @@
-package com.sqlite.config;
+package com.example.faas.sqlite.config;
 
 import java.sql.Connection;
 import java.sql.SQLException;
