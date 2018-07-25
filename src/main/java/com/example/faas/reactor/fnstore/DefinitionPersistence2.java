@@ -32,7 +32,7 @@ public class DefinitionPersistence2 implements DefinitionPersistence  {
 		String functionName = request.getFunctionName();
 		
 		Map<String, String> config = new HashMap<>();
-		FunctionDefinition def = new FunctionDefinition(functionName, loadSrcFromFile(), "Test", "", 
+		FunctionDefinition def = new FunctionDefinition(functionName, loadSrcFromFile(), "Test", 
 				config, libs);
 		// load function identified by functionName
 		return def;

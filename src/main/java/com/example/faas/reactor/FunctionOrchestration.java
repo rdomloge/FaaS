@@ -120,6 +120,7 @@ public class FunctionOrchestration {
 					}
 				}
 				catch(FunctionPreparationException fpex) {
+					LOGGER.error("Could not prepare", fpex);
 					sender.sendError(request, "Could not prepare", fpex);
 				}
 				finally {

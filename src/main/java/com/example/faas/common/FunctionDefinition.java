@@ -17,14 +17,28 @@ public class FunctionDefinition {
 	private LibResource[] libs;
 
 	public FunctionDefinition(String functionUniqueName, String sourceCode, String functionClassName, 
-			String packageName, Map<String, String> config, LibResource[] libs) {
+			Map<String, String> config, LibResource[] libs) {
 		
 		this.functionUniqueName = functionUniqueName;
 		this.sourceCode = sourceCode;
-		this.functionClassName = functionClassName;
-		this.packageName = packageName;
+//		this.functionClassName = functionClassName;
+//		this.packageName = packageName;
+		splitPackageNameAndClassSimpleName(functionClassName);
 		this.config = config;
 		this.libs = libs;
+	}
+	
+	private void splitPackageNameAndClassSimpleName(String fullyQualifiedClassName) {
+		if(fullyQualifiedClassName.contains(".")) {
+			this.packageName = 
+					fullyQualifiedClassName.substring(0, fullyQualifiedClassName.lastIndexOf("."));
+			this.functionClassName = 
+					fullyQualifiedClassName.substring(fullyQualifiedClassName.lastIndexOf(".")+1);
+		}
+		else {
+			functionClassName = fullyQualifiedClassName;
+			packageName = "";
+		}
 	}
 
 	public String getFunctionUniqueName() {
@@ -39,8 +53,10 @@ public class FunctionDefinition {
 		return functionClassName;
 	}
 
-	public String getPackageName() {
-		return packageName;
+	public String[] getPackageName() {
+		if(packageName.trim().length() < 1) return new String[] { };
+		if(packageName.contains(".")) return packageName.split(".");
+		return new String[] { packageName };
 	}
 
 	public LibResource[] getLibs() {

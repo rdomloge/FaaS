@@ -1,15 +1,20 @@
 package com.example.faas.reactor.fnloader;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.concurrent.Executor;
+import java.io.OutputStreamWriter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.example.faas.common.Job;
 
 public class ProcessStreamCapture {
 	
@@ -22,23 +27,31 @@ public class ProcessStreamCapture {
 	private Reader errorReader;
 	
 	private Reader inputReader;
+
+	private File workspace;
+	
+	private Job job;
+	
 	
 	class Reader implements Runnable {
 		private InputStream stream;
+		private OutputStream output;
 		
-		private StringBuilder sb = new StringBuilder();
 
-		public Reader(InputStream stream) {
+		public Reader(InputStream stream, OutputStream output) {
 			this.stream = stream;
+			this.output = output;
 		}
 
 		@Override
 		public void run() {
-			try(InputStreamReader isr = new InputStreamReader(stream)) {
+			try(InputStreamReader isr = new InputStreamReader(stream); 
+					OutputStreamWriter osw = new OutputStreamWriter(output)) {
+				
 				char[] buf = new char[64];
 				int read = 0;
 				while((read = isr.read(buf)) != -1) {
-					sb.append(buf, 0, read);
+					osw.write(buf, 0, read);
 				}
 				LOGGER.debug("Read complete");
 			}
@@ -47,24 +60,24 @@ public class ProcessStreamCapture {
 				e.printStackTrace();
 			}
 		}
-		
-		public String getCapture() {
-			return sb.toString();
-		}
 	}
 
-	public ProcessStreamCapture(Process process) {
+	public ProcessStreamCapture(Process process, File workspace, Job job) {
 		this.process = process;
+		this.workspace = workspace;
+		this.job = job;
 	}
 
-	public void startCapture() {
+	public void startCapture() throws FileNotFoundException {
 		InputStream errorStream = process.getErrorStream();
 		InputStream inputStream = process.getInputStream();
 		
-		errorReader = new Reader(errorStream);
+		File stdErrFile = new File(workspace, "stdErr-"+job.getJobId()+".log");
+		errorReader = new Reader(errorStream, new FileOutputStream(stdErrFile));
 		exec.execute(errorReader);
 		
-		inputReader = new Reader(inputStream);
+		File stdOutFile = new File(workspace, "stdOut-"+job.getJobId()+".log");
+		inputReader = new Reader(inputStream, new FileOutputStream(stdOutFile));
 		exec.execute(inputReader);
 		
 		LOGGER.debug("Readers started");
@@ -73,7 +86,5 @@ public class ProcessStreamCapture {
 	public void cleanUp() {
 		exec.shutdownNow();
 		LOGGER.debug("Executor stopped");
-		LOGGER.debug("Stderr\n{}", errorReader.getCapture());
-		LOGGER.debug("Stdout\n{}", inputReader.getCapture());
 	}
 }

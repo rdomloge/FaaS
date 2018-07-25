@@ -38,7 +38,12 @@ public class DatabaseDefinitionPersistence implements DefinitionPersistence {
 			}
 			
 			Map<String, String> config = new HashMap<>();
-			def = new FunctionDefinition(function.getName(), new String(function.getFile()), function.getClassname(), "", config, libs);
+			def = new FunctionDefinition(
+					function.getName(), 
+					new String(function.getFile()), 
+					function.getClassname(), 
+					config, 
+					libs);
 		} catch (SQLException e) {
 			throw new FunctionPreparationException(e);
 		}

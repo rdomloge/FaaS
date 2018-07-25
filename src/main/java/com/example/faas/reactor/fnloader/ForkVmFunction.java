@@ -46,7 +46,7 @@ public class ForkVmFunction extends AbstractFunction {
 	    LOGGER.debug("Command: {}", command);
 	    try {
 		    Process process = processBuilder.start();
-		    ProcessStreamCapture capture = new ProcessStreamCapture(process);
+		    ProcessStreamCapture capture = new ProcessStreamCapture(process, wrd.getWorkspace(), wrd.getJob());
 		    capture.startCapture();
 		    LOGGER.debug("Process started");
 		    process.waitFor();

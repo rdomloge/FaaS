@@ -1,0 +1,52 @@
+<root>
+<functions>
+	<function>
+		<name>test</name>
+		<classname>catholicon.CatholiconRecentMatchesSpiderFunction</classname>
+		<filename>CatholiconRecentMatchesSpiderFunction.java</filename>
+		<filepath>src/main/test-functions/</filepath>
+		<libs>
+			<lib>
+				<filename>slf4j-simple-1.6.1.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/slf4j/slf4j-simple/1.6.1/</filepath>
+			</lib>
+			<lib>
+				<filename>slf4j-api-1.6.1.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/slf4j/slf4j-api/1.6.1/</filepath>
+			</lib>
+			<lib>
+				<filename>jsoup-1.9.2.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/jsoup/jsoup/1.9.2/</filepath>
+			</lib>
+			<lib>
+				<filename>catholicon.jar</filename>
+				<filepath>/Users/rdomloge/Documents/workspace/FaaS/src/main/test-functions/</filepath>
+			</lib>
+			<lib>
+				<filename>spring-core-4.3.6.RELEASE.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/springframework/spring-core/4.3.6.RELEASE/</filepath>
+			</lib>
+			<lib>
+				<filename>httpclient-4.5.2.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/apache/httpcomponents/httpclient/4.5.2/</filepath>
+			</lib>
+			<lib>
+				<filename>httpcore-4.4.6.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/apache/httpcomponents/httpcore/4.4.6/</filepath>
+			</lib>
+			<lib>
+				<filename>commons-logging-1.1.1.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/commons-logging/commons-logging/1.1.1/</filepath>
+			</lib>
+			<lib>
+				<filename>javax.servlet-api-3.1.0.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/</filepath>
+			</lib>
+			<lib>
+				<filename>spring-web-4.3.6.RELEASE.jar</filename>
+				<filepath>/Users/rdomloge/.m2/repository/org/springframework/spring-web/4.3.6.RELEASE/</filepath>
+			</lib>
+		</libs>
+	</function>
+</functions>
+</root>

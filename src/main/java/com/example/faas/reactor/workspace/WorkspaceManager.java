@@ -35,20 +35,28 @@ public class WorkspaceManager {
 	@Value("${target.root.path}")
 	public String rootPath;
 
-	@Value("${api.jar}")
-	public String apiJar;
+	@Value("${api.lib.path}")
+	public String apiLibPath;
 
-	@Value("${dto.jar}")
-	public String dtoJar;
+//	@Value("${dto.jar}")
+//	public String dtoJar;
 	
-	@Value("${driver.lib.path}")
-	public String driverLibPath;
+	@Value("${fork.vm.lib.path}")
+	public String forkVmLibPath;
 	
 	private File root;
 
 	@PostConstruct
-	public void postConstruct() {
+	public void postConstruct() throws FunctionPreparationException {
 		root = new File(rootPath);
+		
+		File forkVmLib = new File(forkVmLibPath);
+		if (!forkVmLib.exists())
+			throw new FunctionPreparationException("Fork VM lib missing: " + forkVmLib);
+		
+		File apiLib = new File(apiLibPath);
+		if (!apiLib.exists())
+			throw new FunctionPreparationException("API lib missing: " + apiLib);
 	}
 
 
@@ -61,7 +69,7 @@ public class WorkspaceManager {
 		File compiledBinFolder = checkOrMakeFolder(new File(workspace, "classes"));
 //<<<<<<< Updated upstream
 
-		File[] faasLibs = new File[] { new File(apiJar), new File(dtoJar) };
+		File[] faasLibs = new File[] { new File(apiLibPath), new File(forkVmLibPath) };
 
 		compile(functionDefinition, job.getJobId(), compiledBinFolder, libFolder, faasLibs);
 
@@ -115,15 +123,16 @@ public class WorkspaceManager {
 
 	public void cleanupWorkspaceFolder(File f) throws IOException {
 		if (f.isFile()) {
-			if (!f.delete())
-				throw new IOException("Could not delete " + f);
-		} else if (f.isDirectory()) {
+			if (!f.delete()) throw new IOException("Could not delete " + f);
+		} 
+		else if (f.isDirectory()) {
 			File[] children = f.listFiles();
 			for (File child : children) {
 				cleanupWorkspaceFolder(child);
 			}
 			f.delete();
-		} else
+		} 
+		else
 			throw new IOException("What the hell is " + f);
 	}
 
@@ -156,7 +165,6 @@ public class WorkspaceManager {
 			
 			CharArrayWriter stdOut = new CharArrayWriter();
 			
-			
 			// Compile the file
 			boolean success = compiler.getTask(stdOut, fileManager, null, null, null,
 					fileManager.getJavaFileObjectsFromFiles(Arrays.asList(sourceFile))).call();
@@ -179,10 +187,7 @@ public class WorkspaceManager {
 			throws FunctionPreparationException {
 
 		List<File> files = new LinkedList<>();
-		File driverLib = new File(driverLibPath);
-		if (!driverLib.exists())
-			throw new FunctionPreparationException("Driving lib missing: " + driverLib);
-		files.add(driverLib);
+		
 		for (int i = 0; i < definition.getLibs().length; i++) {
 			LibResource resource = definition.getLibs()[i];
 			File file = new File(libFolder, resource.getLibName());
@@ -190,6 +195,7 @@ public class WorkspaceManager {
 				throw new FunctionPreparationException("Classpath file missing: " + file);
 			files.add(file);
 		}
+		
 		for (int i = 0; i < faasLibs.length; i++) {
 			File lib = faasLibs[i];
 			if (!lib.exists())
@@ -199,12 +205,13 @@ public class WorkspaceManager {
 		return files;
 	}
 
-	private File writeSource(File workspaceFolder, FunctionDefinition definition) throws IOException {
-		String[] folderNamesForPackage = definition.getPackageName().split(".");
+	private File writeSource(File workspaceFolder, FunctionDefinition definition) throws IOException, FunctionPreparationException {
+		String[] folderNamesForPackage = definition.getPackageName();
 		File currentFolder = workspaceFolder;
 		for (String folderName : folderNamesForPackage) {
 			currentFolder = new File(currentFolder, folderName);
 		}
+		checkOrMakeFolder(currentFolder);
 		File sourceFile = new File(currentFolder, definition.getFunctionClassName() + ".java");
 		try (FileOutputStream fos = new FileOutputStream(sourceFile)) {
 			fos.write(definition.getSourceCode().getBytes());
