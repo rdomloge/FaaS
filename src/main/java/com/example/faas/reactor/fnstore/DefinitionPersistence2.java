@@ -3,6 +3,8 @@ package com.example.faas.reactor.fnstore;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,8 @@ import com.example.faas.dto.JobRequest;
 import com.example.faas.ex.FunctionPreparationException;
 
 @Service
-public class RamsayDefinitionPersistence implements DefinitionPersistence {
+public class DefinitionPersistence2 implements DefinitionPersistence  {
 
-	public static final String FUNCTION_ROOT = "/Users/rdomloge/";
-	public static final String REPO_ROOT = ".m2/repository/";
-	
 	
 	public FunctionDefinition load(JobRequest request) throws FunctionPreparationException {
 		LibResource[] libs = {
@@ -30,19 +29,19 @@ public class RamsayDefinitionPersistence implements DefinitionPersistence {
 					"catholicon.jar", 
 					"/Users/rdomloge/Documents/workspace/FaaS/src/main/test-functions/catholicon.jar")};
 		
-		String functionFileName = "/Users/rdomloge/Documents/workspace/FaaS/src/main/test-functions/Test.java";
-		
 		String functionName = request.getFunctionName();
-		FunctionDefinition def = new FunctionDefinition(functionName, loadSourceCode(functionFileName), "Test", "", libs);
+		
+		Map<String, String> config = new HashMap<>();
+		FunctionDefinition def = new FunctionDefinition(functionName, loadSrcFromFile(), "Test", "", 
+				config, libs);
 		// load function identified by functionName
-
 		return def;
 	}
-
-	private String loadSourceCode(String filename) throws FunctionPreparationException {
+	
+	private static String loadSrcFromFile() throws FunctionPreparationException {
 		StringBuilder sb = new StringBuilder();
 		
-		try(FileReader fr = new FileReader(new File(filename))) {
+		try(FileReader fr = new FileReader(new File("/Users/rdomloge/Documents/workspace/FaaS/src/main/test-functions/Test.java"))) {
 			char[] buf = new char[32];
 			int read = 0;
 			while((read = fr.read(buf)) != -1) {
@@ -55,5 +54,4 @@ public class RamsayDefinitionPersistence implements DefinitionPersistence {
 		
 		return sb.toString();
 	}
-
 }

@@ -1,6 +1,8 @@
 package com.example.faas.reactor.fnstore;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,8 @@ public class DatabaseDefinitionPersistence implements DefinitionPersistence {
 				libs[i] = lib;
 			}
 			
-			def = new FunctionDefinition(function.getName(), new String(function.getFile()), function.getClassname(), "", libs);
+			Map<String, String> config = new HashMap<>();
+			def = new FunctionDefinition(function.getName(), new String(function.getFile()), function.getClassname(), "", config, libs);
 		} catch (SQLException e) {
 			throw new FunctionPreparationException(e);
 		}

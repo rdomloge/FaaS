@@ -32,12 +32,14 @@ public class FunctionLoader {
 		URL[] classPathUrls = buildClassPathUrls(workspaceResourcesDescriptor);
 		try {
 			URLClassLoader cl = new URLClassLoader(classPathUrls, Function.class.getClassLoader());
-			Class<?> loaded = cl.loadClass(workspaceResourcesDescriptor.getFunctionDefinition().getFunctionClassName());
+			Class<?> loaded = cl.loadClass(
+					workspaceResourcesDescriptor.getFunctionDefinition().getFullyQualifiedClassName());
 			if( ! Function.class.isAssignableFrom(loaded)) 
 				throw new FunctionPreparationException(String.format("%s is not a function", 
 						workspaceResourcesDescriptor.getFunctionDefinition().getFunctionClassName()));
 			Object instance = loaded.newInstance();
 			Function<?> f = (Function<?>) instance;
+			f.setStaticConfig(workspaceResourcesDescriptor.getFunctionDefinition().getConfig());
 			LOGGER.debug("Function loaded");
 			return new ClassloaderExecutionResource(f, workspaceResourcesDescriptor, cl);
 		}

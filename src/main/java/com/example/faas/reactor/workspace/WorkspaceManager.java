@@ -1,5 +1,6 @@
 package com.example.faas.reactor.workspace;
 
+import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -132,14 +133,18 @@ public class WorkspaceManager {
 			fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(destination));
 			fileManager.setLocation(StandardLocation.CLASS_PATH, classPathFiles);
 			File sourceFile = writeSource(destination, definition);
-
+			
+			CharArrayWriter stdOut = new CharArrayWriter();
+			
+			
 			// Compile the file
-			boolean success = compiler.getTask(null, fileManager, null, null, null,
+			boolean success = compiler.getTask(stdOut, fileManager, null, null, null,
 					fileManager.getJavaFileObjectsFromFiles(Arrays.asList(sourceFile))).call();
 			fileManager.close();
-
-			if (!success) {
-				LOGGER.info("Built classpath Files <{}>", classPathFiles);
+			
+			if( ! success) {
+				LOGGER.error("Compile failed. Classpath: <{}>", classPathFiles);
+				LOGGER.error("Compiler output: {}", new String(stdOut.toCharArray()));
 				throw new FunctionPreparationException("Code did not compile");
 			} else {
 				LOGGER.debug("Code compiled");
@@ -182,7 +187,7 @@ public class WorkspaceManager {
 		}
 		File sourceFile = new File(currentFolder, definition.getFunctionClassName() + ".java");
 		try (FileOutputStream fos = new FileOutputStream(sourceFile)) {
-			fos.write(definition.getSource().getBytes());
+			fos.write(definition.getSourceCode().getBytes());
 		}
 		LOGGER.debug("Wrote source to {}", sourceFile.getAbsolutePath());
 		return sourceFile;
