@@ -33,16 +33,19 @@ public class WorkspaceManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WorkspaceManager.class);
 
 	@Value("${target.root.path}")
-	public String rootPath;
+	private String rootPath;
 
 	@Value("${api.lib.path}")
-	public String apiLibPath;
+	private String apiLibPath;
 
 //	@Value("${dto.jar}")
 //	public String dtoJar;
 	
 	@Value("${fork.vm.lib.path}")
-	public String forkVmLibPath;
+	private String forkVmLibPath;
+	
+	@Value("${jackson.lib.paths}")
+	private String[] jacksonLibs;
 	
 	private File root;
 
@@ -57,6 +60,11 @@ public class WorkspaceManager {
 		File apiLib = new File(apiLibPath);
 		if (!apiLib.exists())
 			throw new FunctionPreparationException("API lib missing: " + apiLib);
+		
+		for (String path : jacksonLibs) {
+			if( ! new File(path).exists()) 
+				throw new FunctionPreparationException("Jackson lib missing: " + apiLib);
+		}
 	}
 
 
@@ -67,32 +75,16 @@ public class WorkspaceManager {
 		File libFolder = checkOrMakeFolder(new File(workspace, "lib"));
 		copyLibs(libFolder, functionDefinition.getLibs());
 		File compiledBinFolder = checkOrMakeFolder(new File(workspace, "classes"));
-//<<<<<<< Updated upstream
-
-		File[] faasLibs = new File[] { new File(apiLibPath), new File(forkVmLibPath) };
-
+		List<File> faasLibList = new LinkedList<>();
+		faasLibList.add(new File(apiLibPath));
+		faasLibList.add(new File(forkVmLibPath));
+		for (String path : jacksonLibs) {
+			faasLibList.add(new File(path));
+		}
+		File[] faasLibs = faasLibList.toArray(new File[0]);
 		compile(functionDefinition, job.getJobId(), compiledBinFolder, libFolder, faasLibs);
 
 		return new WorkspaceResourcesDescriptor(functionDefinition, job, workspace, libFolder, compiledBinFolder,
-//=======
-		
-//		File[] faasLibs = new File[] { 
-//				new File("/Users/rdomloge/Documents/workspace/FaaS-API/target/faas-api-0.0.1-SNAPSHOT.jar"),
-//				new File("/Users/rdomloge/Documents/workspace/FaaS-VM/target/faas-vm-0.0.1-SNAPSHOT.jar"),
-//				new File("/Users/rdomloge/.m2/repository/ch/qos/logback/logback-classic/1.1.9/logback-classic-1.1.9.jar"),
-//				new File("/Users/rdomloge/.m2/repository/ch/qos/logback/logback-core/1.1.9/logback-core-1.1.9.jar"),
-//				new File("/Users/rdomloge/.m2/repository/org/slf4j/slf4j-api/1.7.22/slf4j-api-1.7.22.jar")
-//				};
-		
-//		compile(functionDefinition, jobId, compiledBinFolder, libFolder, faasLibs);
-		
-//		return new WorkspaceResourcesDescriptor(
-//				functionDefinition, 
-//				job, 
-//				workspace, 
-//				libFolder, 
-//				compiledBinFolder, 
-//>>>>>>> Stashed changes
 				faasLibs);
 	}
 

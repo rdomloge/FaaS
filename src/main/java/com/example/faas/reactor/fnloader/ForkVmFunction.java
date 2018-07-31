@@ -26,7 +26,6 @@ public class ForkVmFunction extends AbstractFunction {
 	@Override
 	public Object call() {
 		String separator = System.getProperty("file.separator");
-//	    String classpath = System.getProperty("java.class.path");
 		String classpath = buildClassPath();
 	    String path = System.getProperty("java.home")
 	                + separator + "bin" + separator + "java";
@@ -41,7 +40,10 @@ public class ForkVmFunction extends AbstractFunction {
 	    		"-cp", 
                 classpath,
                 "com.example.faas.vm.config.ApplicationMain",
-                fullyQualifiedClassName);
+                fullyQualifiedClassName,
+                wrd.getJob().getJobId(),
+                wrd.getWorkspace().getAbsolutePath());
+	    
 	    List<String> command = processBuilder.command();
 	    LOGGER.debug("Command: {}", command);
 	    try {
