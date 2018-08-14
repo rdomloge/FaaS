@@ -5,6 +5,12 @@
 		<classname>catholicon.CatholiconRecentMatchesSpiderFunction</classname>
 		<filename>CatholiconRecentMatchesSpiderFunction.java</filename>
 		<filepath>src/main/test-functions/</filepath>
+		<config>
+			<property>
+				<key>BASE_URL</key>
+				<value>http://bdbl.org.uk</value>
+			</property>
+		</config>
 		<libs>
 			<lib>
 				<filename>slf4j-simple-1.6.1.jar</filename>

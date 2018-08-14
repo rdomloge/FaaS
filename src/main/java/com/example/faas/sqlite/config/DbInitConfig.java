@@ -24,6 +24,7 @@ public class DbInitConfig implements InitializingBean {
 
 			createFunctionTable(statement);
 			createResourceTable(statement);
+			createConfigTable(statement);
 			
 			statement.close();
 			connection.close();
@@ -54,4 +55,12 @@ public class DbInitConfig implements InitializingBean {
 				"file BLOB null);");
 	}
 
+	private void createConfigTable(Statement statement) throws SQLException {
+		statement.execute("DROP TABLE IF EXISTS config;");
+		statement.executeUpdate("CREATE TABLE config(" +
+				"id INTEGER Primary key, " +
+				"key VARCHAR(255) not null, " +
+				"value VARCHAR(255) not null, " +
+				"function_id INTEGER not null);");
+	}
 }

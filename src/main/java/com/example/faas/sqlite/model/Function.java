@@ -29,8 +29,12 @@ public class Function {
 	@JsonProperty("libs")
 	private List<Lib> libs;
 
+	@JsonProperty("config")
+	private List<Property> config;
+	
 	public Function() {
 		this.libs = new ArrayList<>();
+		this.config = new ArrayList<>();
 	}
 
 	public byte[] getFile() {
@@ -91,5 +95,17 @@ public class Function {
 
 	public void setLibs(List<Lib> libs) {
 		this.libs = libs;
+	}
+
+	public void addProperty(Property property) {
+		config.add(property);
+	}
+
+	public List<Property> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Property> config) {
+		this.config = config;
 	}
 }

@@ -21,6 +21,7 @@ import com.example.faas.sqlite.FileHelper;
 import com.example.faas.sqlite.model.Function;
 import com.example.faas.sqlite.model.Functions;
 import com.example.faas.sqlite.model.Lib;
+import com.example.faas.sqlite.model.Property;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 @Configuration
@@ -40,10 +41,14 @@ public class DbInitInsertFunctions {
 			Functions functions = parseFunctionsXml();
 
 			int functionId = 1;
+			int propertyId = 1;
 			int libId = 1;
 			for (Function function : functions.getFunctions()) {
 				populateFunctionTable(connection, functionId, function.getName(), function.getClassname(),
 						function.getFilepath(), function.getFilename());
+				for (Property property : function.getConfig()) {
+					populateConfigTable(connection, propertyId++, property.getKey(), property.getValue(), functionId);
+				}
 				for (Lib lib : function.getLibs()) {
 					populateResourceTable(connection, libId++, lib.getFilepath(), lib.getFilename(), functionId);
 				}
@@ -65,6 +70,28 @@ public class DbInitInsertFunctions {
 		Functions functions = xmlMapper.readValue(xml, Functions.class);
 
 		return functions;
+	}
+
+	private void populateConfigTable(Connection connection, int id, String key, String value, int functionId)
+			throws SQLException {
+
+		try (Statement statement = connection.createStatement()) {
+			String sql = "INSERT INTO config (id, key, value, function_id) VALUES (%d, '%s', '%s', %d)";
+			statement.executeUpdate(String.format(sql, id, key, value, functionId));
+		}
+
+	}
+
+	private void uploadFileToDatabase(Connection connection, String updateSql, int id, String filepath, String filename)
+			throws IOException, SQLException {
+		byte[] blob;
+		blob = FileHelper.readFile(filepath + filename);
+		try (PreparedStatement pstmt = connection.prepareStatement(updateSql)) {
+			pstmt.setBytes(1, blob);
+			pstmt.setInt(2, id);
+
+			pstmt.executeUpdate();
+		}
 	}
 
 	private void populateFunctionTable(Connection connection, int id, String functionName, String classname,
@@ -95,16 +122,5 @@ public class DbInitInsertFunctions {
 
 	}
 
-	private void uploadFileToDatabase(Connection connection, String updateSql, int id, String filepath, String filename)
-			throws IOException, SQLException {
-		byte[] blob;
-		blob = FileHelper.readFile(filepath + filename);
-		try (PreparedStatement pstmt = connection.prepareStatement(updateSql)) {
-			pstmt.setBytes(1, blob);
-			pstmt.setInt(2, id);
-
-			pstmt.executeUpdate();
-		}
-	}
 
 }

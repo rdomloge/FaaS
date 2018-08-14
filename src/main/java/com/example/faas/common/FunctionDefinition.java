@@ -24,7 +24,7 @@ public class FunctionDefinition {
 //		this.functionClassName = functionClassName;
 //		this.packageName = packageName;
 		splitPackageNameAndClassSimpleName(functionClassName);
-		this.config = config;
+		this.config = config; // Populated from DB
 		this.libs = libs;
 	}
 	

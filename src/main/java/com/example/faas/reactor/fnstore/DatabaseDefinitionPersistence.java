@@ -12,6 +12,7 @@ import com.example.faas.common.LibResource;
 import com.example.faas.dto.JobRequest;
 import com.example.faas.ex.FunctionPreparationException;
 import com.example.faas.sqlite.model.Function;
+import com.example.faas.sqlite.model.Property;
 import com.example.faas.sqlite.repository.FunctionRepository;
 
 @Service
@@ -27,6 +28,11 @@ public class DatabaseDefinitionPersistence implements DefinitionPersistence {
 		
 		try {
 			Function function = functionRepo.findByFunctionName(request.getFunctionName());
+
+			Map<String, String> config = new HashMap<>();
+			for (Property property : function.getConfig()) {
+				config.put(property.getKey(), property.getValue());
+			}
 			
 			libs = new LibResource[function.getLibs().size()];
 			for (int i = 0; i < function.getLibs().size(); i++) {
@@ -37,7 +43,6 @@ public class DatabaseDefinitionPersistence implements DefinitionPersistence {
 				libs[i] = lib;
 			}
 			
-			Map<String, String> config = new HashMap<>();
 			def = new FunctionDefinition(
 					function.getName(), 
 					new String(function.getFile()), 
