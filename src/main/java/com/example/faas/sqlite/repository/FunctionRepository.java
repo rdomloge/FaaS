@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.faas.sqlite.model.Function;
 import com.example.faas.sqlite.model.Lib;
+import com.example.faas.sqlite.model.Property;
 
 @Repository
 public class FunctionRepository {
@@ -42,6 +43,14 @@ public class FunctionRepository {
 						lib.setFilename(libRs.getString("filename"));
 						lib.setFile(libRs.getBytes("file"));
 						function.addLib(lib);
+					}
+					
+					ResultSet configRs = statement.executeQuery("SELECT * FROM config WHERE function_id = " + functionRs.getInt("id"));
+					while (configRs.next()) {
+						Property property = new Property();
+						property.setKey(configRs.getString("key"));
+						property.setValue(configRs.getString("value"));
+						function.addProperty(property);
 					}
 				}
 				else {

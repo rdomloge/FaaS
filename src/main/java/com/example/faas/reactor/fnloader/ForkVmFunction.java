@@ -1,18 +1,16 @@
 package com.example.faas.reactor.fnloader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.faas.common.AbstractFunction;
-import com.example.faas.common.FunctionDefinition;
 import com.example.faas.common.LibResource;
 import com.example.faas.common.WorkspaceResourcesDescriptor;
 
-public class ForkVmFunction extends AbstractFunction {
+public class ForkVmFunction extends AbstractFunction<Object> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ForkVmFunction.class);
 	

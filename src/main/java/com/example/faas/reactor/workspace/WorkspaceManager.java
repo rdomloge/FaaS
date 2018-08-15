@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.tools.JavaCompiler;
@@ -72,6 +73,7 @@ public class WorkspaceManager {
 			throws FunctionPreparationException {
 
 		File workspace = createWorkspaceFolder(functionDefinition.getFunctionUniqueName(), job.getJobId());
+		createConfig(workspace, functionDefinition.getConfig());
 		File libFolder = checkOrMakeFolder(new File(workspace, "lib"));
 		copyLibs(libFolder, functionDefinition.getLibs());
 		File compiledBinFolder = checkOrMakeFolder(new File(workspace, "classes"));
@@ -86,6 +88,16 @@ public class WorkspaceManager {
 
 		return new WorkspaceResourcesDescriptor(functionDefinition, job, workspace, libFolder, compiledBinFolder,
 				faasLibs);
+	}
+	
+	private void createConfig(File workspace, Properties properties) throws FunctionPreparationException {
+		File configFile = new File(workspace, "config.txt");
+		try (FileOutputStream fos = new FileOutputStream(configFile)) {
+			properties.store(fos, "Project Properties");
+		} catch (IOException ioex) {
+			LOGGER.error("Error creating config.txt", ioex);
+			throw new FunctionPreparationException("Error creating config.txt", ioex);
+		}
 	}
 
 	private void copyLibs(File libFolder, LibResource[] libs) throws FunctionPreparationException {
