@@ -48,6 +48,8 @@ public class WorkspaceManager {
 	private String[] jacksonLibs;
 	
 	private File root;
+	
+	private long instanceCounter;
 
 	@PostConstruct
 	public void postConstruct() throws FunctionPreparationException {
@@ -101,12 +103,12 @@ public class WorkspaceManager {
 
 	private File createWorkspaceFolder(String functionName, String jobId) throws FunctionPreparationException {
 		File definitionFolder = new File(root, functionName);
-		File jobFolder = new File(definitionFolder, jobId);
+		File instanceFolder = new File(definitionFolder, "instance-"+instanceCounter++);
 
 		try {
 			checkOrMakeFolder(definitionFolder);
-			checkOrMakeFolder(jobFolder);
-			return jobFolder;
+			checkOrMakeFolder(instanceFolder);
+			return instanceFolder;
 		} catch (FunctionPreparationException fpex) {
 			throw new FunctionPreparationException("Could not create workspace folder", fpex);
 		}

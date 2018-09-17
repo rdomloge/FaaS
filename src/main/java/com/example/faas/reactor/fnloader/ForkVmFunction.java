@@ -2,7 +2,11 @@ package com.example.faas.reactor.fnloader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,8 @@ import com.example.faas.common.AbstractFunction;
 import com.example.faas.common.FunctionDefinition;
 import com.example.faas.common.LibResource;
 import com.example.faas.common.WorkspaceResourcesDescriptor;
+import com.example.faas.ex.FunctionException;
+import com.example.faas.ex.FunctionExecutionException;
 
 public class ForkVmFunction extends AbstractFunction {
 	
@@ -35,6 +41,28 @@ public class ForkVmFunction extends AbstractFunction {
 	    
 	    LOGGER.info("Executing {} with classpath {} for class {}", path, classpath, fullyQualifiedClassName);
 	    
+	    Map<String, String> config = wrd.getFunctionDefinition().getConfig();
+	    Properties configProps = new Properties();
+	    configProps.putAll(config);
+	    File configFile = new File(wrd.getWorkspace(), "config.txt");
+	    try {
+			configProps.store(new FileOutputStream(configFile), "Config for "+wrd.getFunctionDefinition().getFunctionUniqueName());
+		} 
+	    catch (IOException e) {
+	    	throw new RuntimeException("Could not write config to file", e);
+		}
+	    
+	    Map<String, String> params = wrd.getJob().getJobRequest().getParams();
+	    Properties paramsProps = new Properties();
+	    paramsProps.putAll(params);
+	    File paramsFile = new File(wrd.getWorkspace(), "params-"+wrd.getJob().getJobId()+".txt");
+	    try {
+			paramsProps.store(new FileOutputStream(paramsFile), "No comments");
+		} 
+	    catch (IOException e) {
+	    	throw new RuntimeException("Could not write params to file", e);
+		}
+	    
 	    ProcessBuilder processBuilder = new ProcessBuilder(
 	    		path, 
 	    		"-cp", 
@@ -48,16 +76,20 @@ public class ForkVmFunction extends AbstractFunction {
 	    LOGGER.debug("Command: {}", command);
 	    try {
 		    Process process = processBuilder.start();
+		    
 		    ProcessStreamCapture capture = new ProcessStreamCapture(process, wrd.getWorkspace(), wrd.getJob());
 		    capture.startCapture();
+		    
 		    LOGGER.debug("Process started");
 		    process.waitFor();
+		    
 		    LOGGER.debug("Process ended");
 		    capture.cleanUp();
 	    }
 	    catch(Exception e) {
 	    	LOGGER.error("Error running VM", e);
 	    }
+	    
 		return null;
 	}
 

@@ -61,6 +61,10 @@ public class Sender {
 			// the sender
 			template.send(request.getResponseRoutingKey(), 
 					new Message(returnPayload.getBytes(), new MessageProperties()));
+			
+			LOGGER.info("Sent error response for '{}' fn, correlation {}", 
+					request.getFunctionName(),
+					request.getCorrelationId());
 		} 
 		catch (JsonProcessingException ex) {
 			LOGGER.error("Could not send error", ex);

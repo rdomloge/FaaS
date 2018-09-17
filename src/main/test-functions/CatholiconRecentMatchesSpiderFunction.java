@@ -30,6 +30,7 @@ public class CatholiconRecentMatchesSpiderFunction extends RecentMatchResultsSpi
 	public void setStaticConfig(Map<String, String> config) {
 		this.config = config;
 		super.BASE = config.get("BASE_URL");
+		System.out.println("Set base URL to "+super.BASE);
 	}
 
 }
