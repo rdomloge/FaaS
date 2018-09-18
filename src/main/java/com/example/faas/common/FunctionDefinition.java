@@ -1,6 +1,6 @@
 package com.example.faas.common;
 
-import java.util.Map;
+import java.util.Properties;
 
 public class FunctionDefinition {
 	
@@ -12,12 +12,12 @@ public class FunctionDefinition {
 	
 	private String packageName;
 	
-	private Map<String, String> config;
+	private Properties config;
 	
 	private LibResource[] libs;
 
 	public FunctionDefinition(String functionUniqueName, String sourceCode, String functionClassName, 
-			Map<String, String> config, LibResource[] libs) {
+			Properties config, LibResource[] libs) {
 		
 		this.functionUniqueName = functionUniqueName;
 		this.sourceCode = sourceCode;
@@ -63,7 +63,7 @@ public class FunctionDefinition {
 		return libs;
 	}
 
-	public Map<String, String> getConfig() {
+	public Properties getConfig() {
 		return config;
 	}
 	

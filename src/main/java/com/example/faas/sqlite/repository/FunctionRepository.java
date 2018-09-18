@@ -49,15 +49,12 @@ public class FunctionRepository {
 					}
 					
 					ResultSet configRs = statement.executeQuery("SELECT * FROM config WHERE function_id = " + functionId);
-					List<Property> properties = new LinkedList<>();
-					while(configRs.next()) {
+					while (configRs.next()) {
 						Property property = new Property();
 						property.setKey(configRs.getString("key"));
 						property.setValue(configRs.getString("value"));
-						properties.add(property);
+						function.addProperty(property);
 					}
-					
-					function.setConfig(properties);
 				}
 				else {
 					throw new SQLException("Function not found: " + functionName);

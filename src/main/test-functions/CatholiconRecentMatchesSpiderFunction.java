@@ -2,6 +2,7 @@ package catholicon;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.example.faas.common.Function;
 
@@ -10,9 +11,9 @@ import catholicon.controller.MatchCardController;
 
 public class CatholiconRecentMatchesSpiderFunction extends RecentMatchResultsSpider implements Function<List<Match>> {
 
-	private Map<String, String> params;
+	private Properties params;
 	
-	private Map<String, String> config;
+	private Properties config;
 	
 	@Override
 	public List<Match> call() {
@@ -22,14 +23,14 @@ public class CatholiconRecentMatchesSpiderFunction extends RecentMatchResultsSpi
 	}
 
 	@Override
-	public void setJobParams(Map<String, String> params) {
+	public void setJobParams(Properties params) {
 		this.params = params;
 	}
 
 	@Override
-	public void setStaticConfig(Map<String, String> config) {
+	public void setStaticConfig(Properties config) {
 		this.config = config;
-		super.BASE = config.get("BASE_URL");
+		super.BASE = config.getProperty("BASE_URL");
 		System.out.println("Set base URL to "+super.BASE);
 	}
 

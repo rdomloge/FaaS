@@ -1,8 +1,7 @@
 package com.example.faas.reactor.fnstore;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class DatabaseDefinitionPersistence implements DefinitionPersistence {
 		try {
 			Function function = functionRepo.findByFunctionName(request.getFunctionName());
 
-			Map<String, String> config = new HashMap<>();
+			Properties config = new Properties();
 			for (Property property : function.getConfig()) {
 				config.put(property.getKey(), property.getValue());
 			}
