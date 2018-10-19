@@ -63,7 +63,7 @@ public class DbInitInsertFunctions {
 		System.out.println("Parsing XML functions file: " + xmlFilename);
 
 		// TODO Find on classpath
-		File file = new File("src/main/resources/" + xmlFilename);
+		File file = new File(xmlFilename);
 
 		XmlMapper xmlMapper = new XmlMapper();
 		String xml = FileHelper.inputStreamToString(new FileInputStream(file));
