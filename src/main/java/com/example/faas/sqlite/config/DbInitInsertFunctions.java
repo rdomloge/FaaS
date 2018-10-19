@@ -12,6 +12,8 @@ import java.sql.Statement;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class DbInitInsertFunctions {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbInitInsertFunctions.class);
 
 	@Autowired
 	private DataSource dataSource;
@@ -57,7 +61,7 @@ public class DbInitInsertFunctions {
 				functionId++;
 			}
 		} catch (SQLException e) {
-			System.err.printf("ERROR: %s !!!!!!!!!!!!!\n", e.getMessage());
+			LOGGER.error("Could not load data", e);
 		}
 	}
 
