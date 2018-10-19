@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 
 import com.example.faas.sqlite.FileHelper;
@@ -35,6 +36,7 @@ public class DbInitInsertFunctions {
 	private String xmlFilename;
 
 	@PostConstruct
+	@DependsOn("DbInitConfig")
 	public void initialize() throws FileNotFoundException, IOException {
 		try (Connection connection = dataSource.getConnection()) {
 
