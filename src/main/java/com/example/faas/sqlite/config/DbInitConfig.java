@@ -6,18 +6,23 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DbInitConfig implements InitializingBean {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbInitConfig.class);
 
 	@Autowired
 	private DataSource dataSource;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		LOGGER.info("Creating schema");
 		try {
 			Connection connection = dataSource.getConnection();
 			Statement statement = connection.createStatement();
@@ -30,7 +35,7 @@ public class DbInitConfig implements InitializingBean {
 			connection.close();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error("Could not create schema", e);
 		}
 	}
 
