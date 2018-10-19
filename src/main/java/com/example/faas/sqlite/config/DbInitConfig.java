@@ -4,24 +4,24 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DbInitConfig implements InitializingBean {
+public class DbInitConfig {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DbInitConfig.class);
 
 	@Autowired
 	private DataSource dataSource;
 	
-	@Override
-	public void afterPropertiesSet() throws Exception {
+	@PostConstruct
+	public void createSchema() throws Exception {
 		LOGGER.info("Creating schema");
 		try {
 			Connection connection = dataSource.getConnection();
