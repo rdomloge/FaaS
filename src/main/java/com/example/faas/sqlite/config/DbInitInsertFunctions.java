@@ -38,6 +38,9 @@ public class DbInitInsertFunctions {
 
 	@Value("${functions.xml.file}")
 	private String xmlFilename;
+	
+	@Autowired
+	private DbInitConfig dbInitConfig;
 
 	@PostConstruct
 	@DependsOn("DbInitConfig")
