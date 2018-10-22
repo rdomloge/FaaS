@@ -39,6 +39,9 @@ public class DbInitInsertFunctions {
 	@Value("${functions.xml.file}")
 	private String xmlFilename;
 	
+	// This needs to be autowired, even though this class never uses it
+	// This causes Spring to initialise it first, which is critical. The DependsOn annotation
+	// ain't working for me.
 	@Autowired
 	private DbInitConfig dbInitConfig;
 
