@@ -15,7 +15,7 @@ public class DbConfig {
 //	        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
 //	        dataSourceBuilder.url("jdbc:sqlite:faas.db");
 	        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-	        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/faas");
+	        dataSourceBuilder.url("jdbc:postgresql://postgrescontainer:5432/faas");
 	        dataSourceBuilder.password("password");
 	        dataSourceBuilder.username("faas");
 	        return dataSourceBuilder.build();   
