@@ -47,7 +47,7 @@ public class DbInitConfig {
 				"classname VARCHAR(255) not null, " +
 				"filepath VARCHAR(255) not null, " +
 				"filename VARCHAR(255) not null, " +
-				"file BLOB null);");
+				"file BYTEA null);");
 	}
 
 	private void createResourceTable(Statement statement) throws SQLException {
@@ -57,7 +57,7 @@ public class DbInitConfig {
 				"filepath VARCHAR(255) not null, " +
 				"filename VARCHAR(255) not null, " +
 				"function_id INTEGER not null, " +
-				"file BLOB null);");
+				"file BYTEA null);");
 	}
 
 	private void createConfigTable(Statement statement) throws SQLException {
