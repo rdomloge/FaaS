@@ -1,38 +1,27 @@
-FROM ubuntu
+FROM faas:vm
+VOLUME /tmp
+ARG FN_FILE
+COPY target/faas.war faas.war
+COPY src/main/resources/${FN_FILE} functions.xml
 
-RUN apt-get update
+RUN apk update
+RUN apk add curl
 
-RUN apt-get install -y git
-
-RUN apt-cache search maven
-RUN apt-get install -y maven
-
-RUN git clone git://github.com/rdomloge/FaaS-DTO.git
-RUN mvn -f FaaS-DTO/pom.xml install
-
-RUN git clone git://github.com/rdomloge/FaaS-API.git
-RUN mvn -f FaaS-API/pom.xml install
-
-RUN git clone git://github.com/rdomloge/FaaS-VM.git
-RUN mvn -f FaaS-VM/pom.xml install
-
-RUN git clone git://github.com/rdomloge/FaaS.git
-RUN mvn -f FaaS/pom.xml package
+ARG M2_HOME
+RUN mkdir execution-workspace
+RUN mkdir libs
+RUN curl http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.8.6/jackson-core-2.8.6.jar --output libs/jackson-core.jar
+RUN curl http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.8.6/jackson-databind-2.8.6.jar --output libs/jackson-databind.jar 
+RUN curl http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar --output libs/jackson-annotations.jar 
 
 EXPOSE 8080
 
-RUN mkdir execution-workspace
-RUN mkdir libs
-ENV JACKSON_HOME /root/.m2/repository/com/fasterxml/jackson/core 
-RUN ln -s $JACKSON_HOME/jackson-core/2.8.6/jackson-core-2.8.6.jar libs/jackson-core.jar
-RUN ln -s $JACKSON_HOME/jackson-databind/2.8.6/jackson-databind-2.8.6.jar libs/jackson-databind.jar
-RUN ln -s $JACKSON_HOME/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar libs/jackson-annotations.jar
-
 # Run the jar file 
 ENTRYPOINT ["java","-jar","-Dtarget.root.path=/execution-workspace",\
-"-Dapi.lib.path=/FaaS-API/target/faas-api.jar",\
-"-Dfork.vm.lib.path=/FaaS-VM/target/faas-vm.jar",\
+"-Dapi.lib.path=./faas-api.jar",\
+"-Dfork.vm.lib.path=./faas-vm.jar",\
 "-Djackson.lib.paths=libs/jackson-core.jar,libs/jackson-databind.jar,libs/jackson-annotations.jar",\
 "-DRMQ_USER=faas-gw",\
 "-DRMQ_PASSWORD=0pen5esame",\
-"FaaS/target/faas.war"]
+"-Dfunctions.xml.file=functions.xml",\
+"faas.war"]

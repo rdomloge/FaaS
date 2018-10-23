@@ -1,0 +1,1 @@
+docker build --build-arg FN_FILE=ramsay-functions.xml -t faas:faas .
