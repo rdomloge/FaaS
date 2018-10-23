@@ -66,7 +66,7 @@ public class WorkspaceManager {
 		
 		for (String path : jacksonLibs) {
 			if( ! new File(path).exists()) 
-				throw new FunctionPreparationException("Jackson lib missing: " + apiLib);
+				throw new FunctionPreparationException("Jackson lib missing: " + path);
 		}
 	}
 
